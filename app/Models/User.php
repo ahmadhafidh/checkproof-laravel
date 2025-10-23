@@ -15,7 +15,15 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role'
     ];
+
+    protected function setRoleAttribute(?string $value)
+    {
+        $validRoles = ['user','manager','administrator'];
+        $value = is_string($value) ? strtolower(trim($value)) : null;
+        $this->attributes['role'] = in_array($value, $validRoles) ? $value : null;
+    }
 
     protected $hidden = [
         'password',
@@ -38,5 +46,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }
