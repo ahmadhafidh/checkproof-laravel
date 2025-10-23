@@ -20,10 +20,11 @@ class AdminNewUserMail extends Mailable
     public function build()
     {
         $html = "
-            <h3>New User Registered</h3>
+            <h3>Hi Administrator, this is a notification about a new user registration.</h3>
             <ul>
                 <li>Name: {$this->user->name}</li>
                 <li>Email: {$this->user->email}</li>
+                <li>Role: {$this->user->role}</li>
                 <li>Created at: {$this->user->created_at}</li>
             </ul>
         ";

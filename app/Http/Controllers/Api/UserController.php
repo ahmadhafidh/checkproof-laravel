@@ -126,6 +126,15 @@ class UserController extends Controller
             // Notify admin of new user
             $adminEmail = config('mail.admin_address', env('MAIL_ADMIN_ADDRESS', 'admin@example.com'));
             Mail::to($adminEmail)->send(new AdminNewUserMail($user));
+
+            $admins = User::where('role', 'administrator')
+                ->where('email', '!=', $adminEmail)
+                ->get();
+
+            // Send to every email with administrator role
+            foreach ($admins as $admin) {
+                Mail::to($admin->email)->send(new AdminNewUserMail($user));
+            }
     
             return response()->json([
                 'id' => $user->id,
